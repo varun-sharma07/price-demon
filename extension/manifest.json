@@ -1,0 +1,52 @@
+{
+    "manifest_version": 3,
+    "name": "Price Demon",
+    "version": "1.0",
+    "description": "Price Demon is a Chrome extension that allows you to view the price of a product on multiple websites in one place.",
+    "icons": {
+        "16": "icons/money-2-16.png",
+        "48": "icons/money-2-48.png",
+        "128": "icons/money-2-128.png"
+    },
+    "action": {
+        "icons": {
+            "16": "icons/money-2-16.png",
+            "48": "icons/money-2-48.png",
+            "128": "icons/money-2-128.png"
+        },
+        "default_popup": "popup/popup.html",
+        "default_title": "Price Demon"
+    },
+    "permissions": [
+        "activeTab",
+        "storage",
+        "scripting"
+    ],
+    "host_permissions": [
+        "https://www.amazon.in/",
+        "https://www.flipkart.com/",
+        "https://www.myntra.com/"
+    ],
+    "content_scripts": [
+        {
+            "matches": [
+                "https://www.amazon.in/*",
+                "https://www.flipkart.com/*",
+                "https://www.myntra.com/*"
+            ],
+            "js": [
+                "content/contentScript.js"
+            ],
+            "run_at": "document_idle"
+        }
+    ],
+    "background": {
+        "service_worker": "background/background.js"
+    },
+    "web_accessible_resources": [
+        {
+            "resources": ["assets/*"],
+            "matches": ["<all_urls>"]
+          }
+    ]
+}
