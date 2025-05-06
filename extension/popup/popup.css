@@ -15,5 +15,39 @@ body {
   #priceInfo {
     font-size: 14px;
     margin-top: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .site-result {
+    border: 1px solid #ddd;
+    padding: 8px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    background: white;
+  }
+  
+  .site-result h3 {
+    margin: 0 0 5px 0;
+    font-size: 16px;
+    color: #1890ff;
+  }
+  
+  .product-title {
+    margin: 5px 0;
+    font-size: 13px;
+  }
+  
+  .product-price {
+    margin: 5px 0;
+    font-weight: bold;
+    font-size: 15px;
+  }
+  
+  .lowest-price {
+    color: #52c41a;
+  }
+  
+  .error {
+    color: #ff4d4f;
   }
   

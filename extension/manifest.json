@@ -9,11 +9,6 @@
         "128": "icons/money-2-128.png"
     },
     "action": {
-        "icons": {
-            "16": "icons/money-2-16.png",
-            "48": "icons/money-2-48.png",
-            "128": "icons/money-2-128.png"
-        },
         "default_popup": "popup/popup.html",
         "default_title": "Price Demon"
     },
@@ -23,9 +18,9 @@
         "scripting"
     ],
     "host_permissions": [
-        "https://www.amazon.in/",
-        "https://www.flipkart.com/",
-        "https://www.myntra.com/"
+        "https://www.amazon.in/*",
+        "https://www.flipkart.com/*",
+        "https://www.myntra.com/*"
     ],
     "content_scripts": [
         {
@@ -47,6 +42,6 @@
         {
             "resources": ["assets/*"],
             "matches": ["<all_urls>"]
-          }
+        }
     ]
 }
