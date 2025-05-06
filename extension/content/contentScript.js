@@ -273,6 +273,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     console.log("Message received in content script:", request);
     
     if (request.action === "getProductInfo") {
+        // Show a visual indicator that the extension is working
+        showProcessingIndicator();
+        
         const hostname = window.location.hostname;
         let productName = null;
         
@@ -307,6 +310,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         
         console.log("Generated search query:", searchQuery);
         
+        // Hide the processing indicator
+        hideProcessingIndicator();
+        
         sendResponse({
             productName: productName,
             productDetails: productDetails,
@@ -316,4 +322,70 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     
     return true; // Keep the message channel open for async response
 });
+
+// Function to show a visual processing indicator
+function showProcessingIndicator() {
+    // Check if indicator already exists
+    if (document.getElementById('price-demon-indicator')) return;
+    
+    // Create indicator element
+    const indicator = document.createElement('div');
+    indicator.id = 'price-demon-indicator';
+    indicator.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        z-index: 9999;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        transition: opacity 0.3s ease;
+    `;
+    
+    // Add spinner
+    const spinner = document.createElement('div');
+    spinner.style.cssText = `
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: price-demon-spin 1s linear infinite;
+        margin-right: 10px;
+    `;
+    
+    // Add animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes price-demon-spin {
+            to { transform: rotate(360deg); }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Add text
+    const text = document.createElement('span');
+    text.textContent = 'Price Demon is checking prices...';
+    
+    indicator.appendChild(spinner);
+    indicator.appendChild(text);
+    document.body.appendChild(indicator);
+}
+
+// Function to hide the processing indicator
+function hideProcessingIndicator() {
+    const indicator = document.getElementById('price-demon-indicator');
+    if (indicator) {
+        indicator.style.opacity = '0';
+        setTimeout(() => {
+            indicator.remove();
+        }, 300);
+    }
+}
   
