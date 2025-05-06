@@ -200,8 +200,69 @@ function getProductDetails() {
     else if (hostname.includes("myntra.com")) {
         productInfo.name = getMyntraTitle();
         
-        // Extract brand and other details similar to above
-        // ...
+        // Try to extract brand from Myntra
+        const brandElement = document.querySelector(".pdp-title .pdp-name");
+        if (brandElement) {
+            productInfo.brand = brandElement.innerText.trim();
+        }
+        
+        // If no brand found from element, try common brands
+        if (!productInfo.brand) {
+            const brandKeywords = ["Apple", "Samsung", "OnePlus", "Xiaomi", "Redmi", "OPPO", "Vivo", "Realme", "Nokia", "Sony", "LG", "Motorola", "Google"];
+            for (const brand of brandKeywords) {
+                if (productInfo.name?.includes(brand)) {
+                    productInfo.brand = brand;
+                    break;
+                }
+            }
+        }
+        
+        // Extract model (similar to other sites)
+        const modelPatterns = [
+            /(iPhone \d+e?)/i,
+            /(Galaxy S\d+)/i,
+            /(OnePlus \d+)/i,
+            /(Pixel \d+)/i,
+            /(Redmi Note \d+)/i,
+            /(Redmi \d+)/i
+        ];
+        
+        for (const pattern of modelPatterns) {
+            const match = productInfo.name?.match(pattern);
+            if (match) {
+                productInfo.model = match[0];
+                break;
+            }
+        }
+        
+        // Extract storage
+        const storageMatch = productInfo.name?.match(/(\d+)\s*GB/i);
+        if (storageMatch) productInfo.storage = storageMatch[0];
+        
+        // Extract color - Myntra often has color in the product description
+        const colorElement = document.querySelector(".pdp-product-description-content");
+        if (colorElement) {
+            const colorKeywords = ["Black", "White", "Blue", "Red", "Green", "Gold", "Silver", "Gray", "Purple", "Yellow"];
+            for (const color of colorKeywords) {
+                if (colorElement.innerText.includes(color)) {
+                    productInfo.color = color;
+                    break;
+                }
+            }
+        }
+        
+        // If no color found in description, try product name
+        if (!productInfo.color) {
+            const colorKeywords = ["Black", "White", "Blue", "Red", "Green", "Gold", "Silver", "Gray", "Purple", "Yellow"];
+            for (const color of colorKeywords) {
+                if (productInfo.name?.includes(color)) {
+                    productInfo.color = color;
+                    break;
+                }
+            }
+        }
+        
+        console.log("Extracted product details from Myntra:", productInfo);
     }
     
     return productInfo;
